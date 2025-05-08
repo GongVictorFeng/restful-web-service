@@ -11,14 +11,21 @@ import java.util.List;
 public class UserDaoService {
 
     private static final List<User> users= new ArrayList<>();
+    private static int count = 0;
 
     static {
-        users.add(new User(1, "Adam", LocalDate.now().minusYears(30)));
-        users.add(new User(2, "Eve", LocalDate.now().minusYears(25)));
-        users.add(new User(3, "Jim", LocalDate.now().minusYears(20)));
+        users.add(new User(++count, "Adam", LocalDate.now().minusYears(30)));
+        users.add(new User(++count, "Eve", LocalDate.now().minusYears(25)));
+        users.add(new User(++count, "Jim", LocalDate.now().minusYears(20)));
     }
     public List<User> findAll() {
         return users;
+    }
+
+    public User save(User user) {
+        user.setId(++count);
+        users.add(user);
+        return user;
     }
 
     public User findOne(int id) {
