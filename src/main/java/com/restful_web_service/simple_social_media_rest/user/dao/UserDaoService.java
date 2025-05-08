@@ -10,7 +10,7 @@ import java.util.List;
 @Component
 public class UserDaoService {
 
-    private static final List<User> users= new ArrayList<>();
+    private static List<User> users= new ArrayList<>();
     private static int count = 0;
 
     static {
@@ -30,5 +30,9 @@ public class UserDaoService {
 
     public User findOne(int id) {
         return users.stream().filter(user -> user.getId() == id).findFirst().orElse(null);
+    }
+
+    public void deleteOne(int id) {
+        users.removeIf(user -> user.getId() == id);
     }
 }

@@ -1,5 +1,6 @@
 package com.restful_web_service.simple_social_media_rest.user;
 
+import com.restful_web_service.simple_social_media_rest.exception.UserNotFoundException;
 import com.restful_web_service.simple_social_media_rest.user.dao.UserDaoService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +24,9 @@ public class UserResource {
 
     @GetMapping("/users/{id}")
     public User getUserById(@PathVariable int id) {
-        return userDaoService.findOne(id);
+        User user = userDaoService.findOne(id);
+        if (user == null) throw new UserNotFoundException("id:" + id);
+        return user;
     }
 
     @PostMapping("/users")
@@ -36,5 +39,10 @@ public class UserResource {
                         .buildAndExpand(savedUser.getId())
                         .toUri();
         return ResponseEntity.created(location).build();
+    }
+
+    @DeleteMapping("users/{id}")
+    public void deleteUserById(@PathVariable int id) {
+        userDaoService.deleteOne(id);
     }
 }
